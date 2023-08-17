@@ -1,0 +1,14 @@
+deploy:
+  image: "konstsamaras/nginx-image"
+  name: nginx
+  replicas: 1
+
+name: nginx
+hostNetwork: false
+
+affinity:
+  key: kubernetes.io/hostname
+  value: k8s-pre-5g-1-genericvnf2-vm-e
+
+pv:
+  claimName: pvclaim

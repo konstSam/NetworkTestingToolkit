@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.name }}"
+  labels :
+    app: "{{ .Values.name }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: " {{ .Values.name }} "
+  template:
+    metadata:
+      labels:
+        app: " {{ .Values.name }} "
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+        - matchExpressions:
+          - key: {{ .Values.affinity.key }}
+            operator: In
+            values:
+            - {{ .Values.affinity.value }}
+      containers :
+      - name: " {{ .Values.name }} "
+        image: "{{ .Values.deploy.image }}"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerport: 80
+        volumeMounts :
+        - mountPath: "/usr/share/nginx/html"
+          name: pv
+      volumes :
+      - name: pv
+        persistentVolumeClaim:
+          claimName: "{{ .Values.pv.claimName }}"
+      hostNetwork: {{ .Values.hostNetwork }}
+---
+apiVersion: vl
+kind: Service
+metadata:
+  name: "{{ .Values.name }}"
+spec :
+  selector:
+    app: " {{ .Values.name }}"
+  type: NodePort
+  ports:
+    - protocol: TCP
+    port: 80
