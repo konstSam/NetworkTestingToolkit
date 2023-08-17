@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistenVolume
+metadata:
+  name: volume1
+  labels:
+    type: local
+spec:
+  storageClassName: hostpath
+  capacity:
+    storage: 50Mi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data/webserver"

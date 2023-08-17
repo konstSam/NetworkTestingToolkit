@@ -1,0 +1,25 @@
+apiVersion: "{{ .Values.deploy.apiVersion }}"
+kind: "{{ .Values.deploy.kind }}"
+metadata:
+  name: "{{ .Values.name }}"
+  labels:
+    app: "{{ .Values.name }}"
+spec:
+  containers:
+  - name: "{{ .Values.name }}"
+    image: "{{ .Values.deploy.image }}"
+    imagePullPolicy: IfNotPresent
+    command: ["/bin/sh","-c"]
+    args: [ '{{ .Values.args }}' ]
+    volumeMounts:
+    - mountPath: "/mnt/data/webserver/"
+      name: pv
+  volumes:
+  - name: pv
+    persistentVolumeClaim:
+      claimName: "{{ .Values.pv.claimName }}"
+  nodeSelector:
+    kubernetes.io/hostname: k8s-pre-5g-1-genericvnf2-vm-0
+  restartPolicy: "{{ .Values.restartPolicy }}"
+  hostNetwork: {{ .Values.hostNetwork }}
+

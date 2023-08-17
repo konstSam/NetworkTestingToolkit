@@ -1,0 +1,18 @@
+deploy:
+  image: "konstsamaras/iperf3-client"
+  kind: Pod
+  apiVersion: v1
+
+name: iperf3-client
+
+args: 'iperf3 -c 172.16.100.23 -J > /mnt/data/webserver/iperf3logs.json; python3.8 pyclient.py;'
+
+affinity:
+  key: kubernetes.io/hostname
+  value: k8s-pre-5g-1-genericvnf2-vm-0
+
+restartPolicy: Never
+hostNetwork: false
+
+pv:
+  claimName: pvclaim1
