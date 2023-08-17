@@ -1,0 +1,14 @@
+apiVersion: vl
+kind: PersistentVolume
+metadata :
+  name: volume2
+  labels:
+    type: local
+spec:
+  storageClassName: hostpath
+  capacity:
+    storage: 100Mi
+  accessModes :
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data/webserver/ookla"

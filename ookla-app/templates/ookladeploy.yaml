@@ -1,0 +1,38 @@
+apiVersion: batch/vl
+kind: Job
+metadata:
+  name: "{{ .Values.name }}"
+spec :
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}"
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedu1ingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: {{ .Values.affinity.key }}
+                operator: In
+                values:
+                - {{ .Values.affinity.value }}
+      containers :
+      - name: " {{ .Values.name }} "
+        image: "{{ .Values.deployment.image }}"
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: OOKLA_EULA_GDPR
+          value: " {{ .Values.eula.OOKLA_EULA_GDPR }}"
+        command: ["/bin/sh", "-c"] 
+        args: [ '{{ .Values.args }}']
+        volumemounts :
+        - mountPath: " /mnt/data/webserver/ookla"
+          name: pv
+      volumes :
+      - name: pv
+        persistentV01umeC1aim:
+          claimName : "{{ .Values.pv.claintName }}"
+      restartPolicy: Never
+      hostNetwork: {{ .Values.deployment.hostNetwork }}
+  backoffLimit: 1

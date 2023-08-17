@@ -1,0 +1,17 @@
+deployment:
+  image: "konstsamaras/ookla-image"
+  hostNetwork: false
+
+name: ookla
+affinity:
+  key: kubernetes.io/hostname
+  value: k8s-pre-5g-1-genericvnf2-vm-0
+
+eula:
+  OOKLA_EULA_GDPR: true
+
+args: 'speedtest -f json --accept-license --accept-gdpr > 
+/mnt/data/webserver/ookla/ooklalogs.json; python3.8 pyookla.py;'
+
+pv:
+  clainName: pvclaim2

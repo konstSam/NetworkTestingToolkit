@@ -1,0 +1,11 @@
+apiVersion: vl
+kind: PersistentVolumeClaim
+metadata:
+  name: pvclaim2
+spec:
+  storageClassName: hostpath
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 90Mi
