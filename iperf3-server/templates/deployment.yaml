@@ -1,0 +1,47 @@
+apiVersion: "{{ .Values.deploy.apiVersion }}"
+kind: "{{ .Values.deploy.kind }}"
+metadata:
+  name: "{{ .Values.name }}"
+  labels:
+    app: "{{ .Values.name }}"
+spec:
+  replicas: {{ .Values.deploy.replicas }}
+  selector:
+    matchLabels:
+      app: "{{ .Values.name }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.name }}"
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: {{ .Values.affinity.key }}
+                operator: In
+                values:
+                - {{ .Values.affinity.value }}
+      containers:
+      - name: "{{ .Values.name }}"
+        image: "{{ .Values.deploy.image }}"
+        imagePullPolicy: IfNotPresent
+        args: ["{{ .Values.args }}"]
+      hostNetwork: {{ .Values.hostNetwork }}
+
+---
+
+apiVersion: v1
+kind: "{{ .Values.service }}"
+metadata:
+  name: "{{ .Values.name }}"
+  labels:
+    app: "{{ .Values.name }}"
+spec:
+  type: NodePort
+  selector:
+    app: "{{ .Values.name }}"
+  ports:
+  - protocol: TCP
+    port: 5201

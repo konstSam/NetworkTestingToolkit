@@ -1,0 +1,19 @@
+# Default values for iperf3-app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+deploy:
+  image: "networkstatic/iperf3"
+  kind: Deployment
+  apiVersion: apps/v1
+  replicas: 1
+
+name: iperf3-server
+args: '-s'
+hostNetwork: true
+
+service: Service
+
+affinity:
+  key: kubernetes.io/hostname
+  value: k8s-post-5g-1-genericvnf2-vm-0
