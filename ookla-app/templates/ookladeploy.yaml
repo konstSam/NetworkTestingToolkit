@@ -1,4 +1,4 @@
-apiVersion: batch/vl
+apiVersion: batch/v1
 kind: Job
 metadata:
   name: "{{ .Values.name }}"
@@ -10,7 +10,7 @@ spec :
     spec:
       affinity:
         nodeAffinity:
-          requiredDuringSchedu1ingIgnoredDuringExecution:
+          requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
               - key: {{ .Values.affinity.key }}
@@ -32,7 +32,7 @@ spec :
       volumes :
       - name: pv
         persistentV01umeC1aim:
-          claimName : "{{ .Values.pv.claintName }}"
+          claimName : "{{ .Values.pv.claimName }}"
       restartPolicy: Never
       hostNetwork: {{ .Values.deployment.hostNetwork }}
   backoffLimit: 1
